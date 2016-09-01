@@ -23,7 +23,11 @@ final class ConjunctionTests: XCTestCase {
 	func testShortCircuits() {
 		var effects = 0
 		let left: Int? = nil
-		let right = { ++effects }
+		let right = { () -> Int in 
+      let oldValue = effects
+      effects += 1
+      return oldValue
+    }
 		XCTAssert((left &&& right()).map(const(true)) == nil)
 		XCTAssertEqual(effects, 0)
 	}
